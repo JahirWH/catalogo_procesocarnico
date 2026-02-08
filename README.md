@@ -1,2 +1,3 @@
-# catalogo_procesocarnico
-web demostracion beta
+# CATALOGO PROCESO CARNICO
+
+- web demostracion beta de galeria de productos info, formulario
