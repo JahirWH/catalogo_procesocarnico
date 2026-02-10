@@ -242,12 +242,14 @@
 
     <!-- Recorridos 360 -->
 
-        <div  id="panorama"></div>
+        <div  id="panorama">
+            <h2 style="position: absolute; top: 20px; left: 20px; color: white; text-shadow: 0 0 5px rgba(0,0,0,0.7); z-index: 1;">Recorrido Virtual 360°</h2>
+        </div>
 
 <script>
     pannellum.viewer('panorama', {
       type: 'equirectangular',
-      panorama: 'imagenes/visual1.jpg',
+      panorama: 'imagenes/visual2.jpg',
       autoLoad: true,
       showZoomCtrl: true,
       compass: true
@@ -255,20 +257,20 @@
   </script>
   <script>pannellum.viewer('panorama', {
   default: {
-    firstScene: "recepcion",
+    firstScene: "Entrada",
     autoLoad: true
   },
 
   scenes: {
     recepcion: {
       type: "equirectangular",
-      panorama: "imagenes/visual2.jpg",
+      panorama: "imagenes/visual1.jpg",
       hotSpots: [
         {
           pitch: 0,
           yaw: 120,
           type: "scene",
-          text: "Ir a sala de juntas",
+          text: "maquinas",
           sceneId: "sala"
         }
       ]
@@ -276,7 +278,7 @@
 
     sala: {
       type: "equirectangular",
-      panorama: "sala_juntas.jpg",
+      panorama: "imagenes/visual2.jpg",
       hotSpots: [
         {
           pitch: 0,
