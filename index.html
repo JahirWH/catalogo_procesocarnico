@@ -11,6 +11,11 @@
     <meta property="og:title" content="Grupo IDR - Soluciones en Procesamiento Cárnico">
     <meta property="og:description" content="Más de 2300 equipos instalados. Maquinaria especializada 100% mexicana desde 2006">
     <meta property="og:type" content="website">
+
+    <!-- para el 360 -->
+     <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+     <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
     
     <title>Grupo IDR - Maquinaria para Procesamiento Cárnico | +2300 Equipos Instalados</title>
     <link rel="stylesheet" href="estilos.css">
@@ -234,6 +239,59 @@
             </div>
         </div>
     </section>
+
+    <!-- Recorridos 360 -->
+
+        <div  id="panorama"></div>
+
+<script>
+    pannellum.viewer('panorama', {
+      type: 'equirectangular',
+      panorama: 'imagenes/visual1.jpg',
+      autoLoad: true,
+      showZoomCtrl: true,
+      compass: true
+    });
+  </script>
+  <script>pannellum.viewer('panorama', {
+  default: {
+    firstScene: "recepcion",
+    autoLoad: true
+  },
+
+  scenes: {
+    recepcion: {
+      type: "equirectangular",
+      panorama: "imagenes/visual2.jpg",
+      hotSpots: [
+        {
+          pitch: 0,
+          yaw: 120,
+          type: "scene",
+          text: "Ir a sala de juntas",
+          sceneId: "sala"
+        }
+      ]
+    },
+
+    sala: {
+      type: "equirectangular",
+      panorama: "sala_juntas.jpg",
+      hotSpots: [
+        {
+          pitch: 0,
+          yaw: -60,
+          type: "scene",
+          text: "Volver a recepción",
+          sceneId: "recepcion"
+        }
+      ]
+    }
+  }
+});
+</script>
+
+
 
     <!-- Formulario de Contacto -->
     <section id="contacto" class="contact">
