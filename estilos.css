@@ -716,10 +716,153 @@ body {
 /* seccion de test de 360  con panorama*/ 
 
 #panorama {
-    width: 100%;
-    height: 400px;
+    margin: auto;
+    justify-content: center;
+    width: 80%;
+    height: 700px;
     margin-top: 4rem;
 }
+
+/* testeando hostpost */
+/* 
+.custom-hotspot .info-box {
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  width: 220px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
+}
+
+.custom-hotspot .info-box:hover {
+  transform: scale(1.05);
+} */
+
+
+/* nuevos estilos hostpots */
+
+#panorama {
+  width: 80%;
+  margin: auto;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Producto Card */
+.producto-card {
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  width: 240px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
+.producto-card h3 {
+  margin: 0 0 5px 0;
+}
+
+.producto-card button {
+  margin-top: 6px;
+  margin-right: 5px;
+  background: #32c41f;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+}
+/* css del modal de cotizacion */
+
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Caja */
+.modal-box {
+  background: #111;
+  color: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  animation: fadeIn 0.3s ease;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
+.modal-box h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+/* Inputs */
+.modal-box input,
+.modal-box textarea {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background: #222;
+  color: white;
+  font-size: 14px;
+}
+
+.modal-box button {
+  width: 100%;
+  padding: 8px;
+  background: #00bcd4;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.close-btn {
+  float: right;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Hotspot animado */
+.producto-hotspot {
+  cursor: pointer;
+}
+
+.producto-hotspot::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background: #f0f3f3;
+  border-radius: 50%;
+  display: block;
+  box-shadow: 0 0 15px #889394;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 
 /* Footer */
 .footer {

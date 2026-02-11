@@ -359,3 +359,9 @@ window.addEventListener('scroll', () => {
     
     lastScroll = currentScroll;
 });
+
+// area del modal de cotizacion
+
+
+
+

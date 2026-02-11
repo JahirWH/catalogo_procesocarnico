@@ -241,12 +241,24 @@
     </section>
 
     <!-- Recorridos 360 -->
+    <section>
+        <div class="menu-productos">
+        <h3>Productos</h3>
+        <button onclick="viewer.loadScene('vista1')">Área 1</button>
+        <button onclick="viewer.loadScene('vista2')">Área 2</button>
+        </div>
 
         <div  id="panorama">
+            <h2>Version 1</h2>
             <h2 style="position: absolute; top: 20px; left: 20px; color: white; text-shadow: 0 0 5px rgba(0,0,0,0.7); z-index: 1;">Recorrido Virtual 360°</h2>
         </div>
 
-<script>
+        <div id="vr2">
+            <h2>Version 2</h2>
+        </div>
+        </section>
+
+<!-- <script>
     pannellum.viewer('panorama', {
       type: 'equirectangular',
       panorama: 'imagenes/visual2.jpg',
@@ -254,45 +266,217 @@
       showZoomCtrl: true,
       compass: true
     });
-  </script>
-  <script>pannellum.viewer('panorama', {
+  </script> -->
+
+ <script>
+
+const viewer = pannellum.viewer('panorama', {
   default: {
-    firstScene: "Entrada",
-    autoLoad: true
+    firstScene: "vista1",
+    autoLoad: true,
+    showZoomCtrl: true,
+    showFullscreenCtrl: true,
+    compass: true,
+    sceneFadeDuration: 1000,
+    autoRotate: -2,
+    autoRotateInactivityDelay: 3000
   },
 
   scenes: {
-    recepcion: {
+
+    vista1: {
       type: "equirectangular",
-      panorama: "imagenes/visual1.jpg",
+      panorama: "imagenes/img1.jpg",
+      hfov: 110,
+      pitch: 0,
+      yaw: 0,
+      minPitch: -30,
+      maxPitch: 30,
+
       hotSpots: [
+
         {
-          pitch: 0,
-          yaw: 120,
+          pitch: 2,
+          yaw: 25,
           type: "scene",
-          text: "maquinas",
-          sceneId: "sala"
+          text: "Ir a Área Ensamblaje",
+          sceneId: "vista2"
+        },
+
+        {
+          pitch: -3,
+          yaw: -30,
+          type: "info",
+          createTooltipFunc: productoHotspot,
+          createTooltipArgs: {
+            nombre: "CNC Industrial Pro X",
+            specs: "5 Ejes · 220V · Alta precisión",
+            precio: "$120,000 MXN",
+            yaw: -30,
+            pitch: -3
+          }
+        },
+
+        {
+          pitch: -1,
+          yaw: 60,
+          type: "info",
+          createTooltipFunc: productoHotspot,
+          createTooltipArgs: {
+            nombre: "Torno Automático Z400",
+            specs: "Motor 7HP · Control digital",
+            precio: "$85,000 MXN",
+            yaw: 60,
+            pitch: -1
+          }
         }
+
       ]
     },
 
-    sala: {
+    vista2: {
       type: "equirectangular",
-      panorama: "imagenes/visual2.jpg",
+      panorama: "imagenes/img2.jpg",
+      hfov: 110,
+      pitch: 0,
+      yaw: 180,
+      minPitch: -30,
+      maxPitch: 30,
+
       hotSpots: [
+
         {
-          pitch: 0,
+          pitch: 3,
           yaw: -60,
           type: "scene",
-          text: "Volver a recepción",
-          sceneId: "recepcion"
+          text: "Volver a Producción",
+          sceneId: "vista1"
+        },
+
+        {
+          pitch: 4,
+          yaw: -10,
+          type: "info",
+          createTooltipFunc: productoHotspot,
+          createTooltipArgs: {
+            nombre: "Prensa Hidráulica HX",
+            specs: "30 Toneladas · Acero reforzado",
+            precio: "$65,000 MXN",
+            yaw: -10,
+            pitch: 4
+          }
+        },
+
+        {
+          pitch: -2,
+          yaw: 45,
+          type: "info",
+          createTooltipFunc: productoHotspot,
+          createTooltipArgs: {
+            nombre: "Cortadora Láser L900",
+            specs: "Precisión 0.01mm · 1500W",
+            precio: "$150,000 MXN",
+            yaw: 45,
+            pitch: -2
+          }
         }
+
       ]
     }
+
   }
+
 });
+
+
+// Función para crear producto interactivo
+function productoHotspot(hotSpotDiv, args) {
+
+  hotSpotDiv.classList.add('producto-hotspot');
+
+  hotSpotDiv.innerHTML = `
+    <div class="producto-card">
+      <h3>${args.nombre}</h3>
+      <p>${args.specs}</p>
+      <strong>${args.precio}</strong><br><br>
+      <button onclick="modalinfo()">Cotizar</button>
+    </div>
+  `;
+
+  // Zoom automático
+  hotSpotDiv.addEventListener("click", function () {
+    viewer.setYaw(args.yaw);
+    viewer.setPitch(args.pitch);
+    viewer.setHfov(60);
+  });
+
+}
+
 </script>
 
+<!-- formulario modal cotizacion -->
+ <script>
+
+function modalinfo() {
+  document.getElementById("modalCotizacion").style.display = "flex";
+}
+
+function cerrarModal() {
+  document.getElementById("modalCotizacion").style.display = "none";
+}
+
+window.addEventListener("click", function(e) {
+  const modal = document.getElementById("modalCotizacion");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+document.getElementById("formCotizacion").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const producto = document.getElementById("productoSeleccionado").value;
+
+  alert("Solicitud enviada para: " + producto);
+
+  cerrarModal();
+});
+
+
+// Cerrar al hacer clic fuera
+window.addEventListener("click", function(e) {
+  const modal = document.getElementById("modalCotizacion");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+// Simulación de envío
+document.getElementById("formCotizacion").addEventListener("submit", function(e) {
+  e.preventDefault();
+  alert("Solicitud enviada correctamente");
+  cerrarModal();
+});
+
+</script>
+
+<!-- Modal -->
+<div id="modalCotizacion" class="modal-overlay">
+  <div class="modal-box">
+    <span class="close-btn" onclick="cerrarModal()">×</span>
+    <h2 id="productoTitulo">Solicitar Información</h2>
+
+    <form id="formCotizacion">
+      <input type="hidden" id="productoSeleccionado">
+
+      <input type="text" placeholder="Nombre completo" required>
+      <input type="email" placeholder="Correo electrónico" required>
+      <textarea placeholder="Mensaje o requerimiento"></textarea>
+
+      <button type="submit">Enviar solicitud</button>
+    </form>
+  </div>
+</div>
 
 
     <!-- Formulario de Contacto -->
