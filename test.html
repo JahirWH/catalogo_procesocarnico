@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Showroom 360 - Marzipano</title>
+
+<script src="https://www.marzipano.net/demos/vendor/es5-shim.js"></script>
+<script src="https://www.marzipano.net/demos/vendor/eventShim.js"></script>
+<script src="https://www.marzipano.net/demos/vendor/classList.js"></script>
+<script src="https://www.marzipano.net/demos/vendor/requestAnimationFrame.js"></script>
+<script src="https://www.marzipano.net/demos/vendor/marzipano.js"></script>
+
+<style>
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+#pano {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+/* Hotspot punto */
+.hotspot {
+  width: 20px;
+  height: 20px;
+  background: #00e5ff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px #00e5ff;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Producto card */
+.producto-card {
+  position: absolute;
+  background: rgba(0,0,0,0.9);
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  width: 220px;
+  transform: translate(-50%, -120%);
+  display: none;
+}
+
+.producto-card button {
+  margin-top: 6px;
+  width: 100%;
+  padding: 6px;
+  background: #00bcd4;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
+  background: #111;
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 320px;
+}
+
+.modal-box input,
+.modal-box textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  background: #222;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div id="pano"></div>
+
+<!-- Modal -->
+<div id="modalCotizacion" class="modal-overlay">
+  <div class="modal-box">
+    <h3 id="productoTitulo"></h3>
+    <input type="hidden" id="productoSeleccionado">
+    <input type="text" placeholder="Nombre" required>
+    <input type="email" placeholder="Correo" required>
+    <textarea placeholder="Mensaje"></textarea>
+    <button onclick="enviar()">Enviar</button>
+  </div>
+</div>
+
+<script>
+
+var viewer = new Marzipano.Viewer(document.getElementById('pano'));
+
+function crearEscena(imagen) {
+  var source = Marzipano.ImageUrlSource.fromString(imagen);
+  var geometry = new Marzipano.EquirectGeometry([{ width: 4000 }]);
+  var limiter = Marzipano.RectilinearView.limit.traditional(1024, 100*Math.PI/180);
+  var view = new Marzipano.RectilinearView(null, limiter);
+  return viewer.createScene({ source, geometry, view });
+}
+
+var escena1 = crearEscena("imagenes/img1.jpg");
+var escena2 = crearEscena("imagenes/img2.jpg");
+
+escena1.switchTo();
+
+// 🔁 Navegación
+agregarHotspotEscena(escena1, escena2, { yaw: 0.4, pitch: 0 });
+agregarHotspotEscena(escena2, escena1, { yaw: -0.5, pitch: 0 });
+
+// 🏭 Productos
+agregarProducto(escena1, {
+  nombre: "CNC Industrial Pro X",
+  specs: "5 Ejes · 220V",
+  precio: "$120,000 MXN",
+  yaw: -0.6,
+  pitch: 0
+});
+
+agregarProducto(escena1, {
+  nombre: "Torno Z400",
+  specs: "Motor 7HP",
+  precio: "$85,000 MXN",
+  yaw: 0.8,
+  pitch: 0
+});
+
+agregarProducto(escena2, {
+  nombre: "Prensa Hidráulica HX",
+  specs: "30 Toneladas",
+  precio: "$65,000 MXN",
+  yaw: -0.2,
+  pitch: 0
+});
+
+agregarProducto(escena2, {
+  nombre: "Cortadora Láser L900",
+  specs: "1500W",
+  precio: "$150,000 MXN",
+  yaw: 0.7,
+  pitch: 0
+});
+
+// -------- FUNCIONES --------
+
+function agregarHotspotEscena(escenaActual, escenaDestino, posicion) {
+  var element = document.createElement('div');
+  element.className = 'hotspot';
+  element.onclick = function() {
+    escenaDestino.switchTo();
+  };
+  escenaActual.hotspotContainer().createHotspot(element, posicion);
+}
+
+function agregarProducto(escena, producto) {
+
+  var punto = document.createElement('div');
+  punto.className = 'hotspot';
+
+  var card = document.createElement('div');
+  card.className = 'producto-card';
+  card.innerHTML = `
+    <strong>${producto.nombre}</strong><br>
+    ${producto.specs}<br>
+    <b>${producto.precio}</b><br>
+    <button onclick="abrirModal('${producto.nombre}')">Cotizar</button>
+  `;
+
+  punto.appendChild(card);
+
+  punto.onclick = function() {
+    card.style.display = card.style.display === 'block' ? 'none' : 'block';
+  };
+
+  escena.hotspotContainer().createHotspot(punto, {
+    yaw: producto.yaw,
+    pitch: producto.pitch
+  });
+}
+
+// -------- MODAL --------
+
+function abrirModal(nombre) {
+  document.getElementById("modalCotizacion").style.display = "flex";
+  document.getElementById("productoTitulo").innerText = "Cotizar: " + nombre;
+  document.getElementById("productoSeleccionado").value = nombre;
+}
+
+function enviar() {
+  var producto = document.getElementById("productoSeleccionado").value;
+  alert("Solicitud enviada para: " + producto);
+  document.getElementById("modalCotizacion").style.display = "none";
+}
+
+</script>
+
+</body>
+</html>

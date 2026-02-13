@@ -360,7 +360,53 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
-// area del modal de cotizacion
+// funciones nuevas para 360
+
+
+function modalinfo() {
+  document.getElementById("modalCotizacion").style.display = "flex";
+}
+
+function cerrarModal() {
+  document.getElementById("modalCotizacion").style.display = "none";
+}
+
+window.addEventListener("click", function(e) {
+  const modal = document.getElementById("modalCotizacion");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+document.getElementById("formCotizacion").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const producto = document.getElementById("productoSeleccionado").value;
+
+  alert("Solicitud enviada para: " + producto);
+
+  cerrarModal();
+});
+
+
+// Cerrar al hacer clic fuera
+window.addEventListener("click", function(e) {
+  const modal = document.getElementById("modalCotizacion");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+// Simulación de envío
+document.getElementById("formCotizacion").addEventListener("submit", function(e) {
+  e.preventDefault();
+  alert("Solicitud enviada correctamente");
+  cerrarModal();
+});
+
+// divisor
+
+
 
 
 
